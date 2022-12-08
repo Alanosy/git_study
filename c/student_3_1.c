@@ -22,6 +22,7 @@ typedef struct subject
 //树存储结构
 typedef struct tree
 {
+
     char num[15];
     char name[10];
     char major[20];
@@ -56,21 +57,24 @@ int find(tree T,char a[],tree f,tree *p)
 {
     if(!T)
     {
+//        printf(" (*p)=f;\n");
         (*p)=f;
         return 0;
     }
-    else if(strcmp(T->num,a)==0)
+    else if(strcmp(T->num,a)==0)//strcmp(T->num,a)==0)
     {
-
+//        printf("strcmp(T->num,a)==0\n");
         (*p)=T;
         return 1;
     }
-    else if(strcmp(T->num,a)>0)
+    else if(strcmp(T->num,a)>0)//strcmp(T->num,a)>0)
     {
+//        printf("return find(T->rchild,a,T,p);\n");
         return find(T->rchild,a,T,p);
     }
     else
     {
+//        printf("return find(T->lchild,a,T,p);\n");
         return find(T->lchild,a,T,p);
     }
 }
@@ -81,6 +85,51 @@ int add(tree *T)
     char c;
     tree s;
     tree f,p;
+    char a[15];
+    f=p=NULL;
+//    printf("请输入学号：");
+//    scanf("%s",a);
+//    if(!find((*T),a,f,&p))
+//    {
+//        s=(tree) malloc(sizeof (tr));
+////        s->num=a;
+//        strcpy(s->num,a);
+//            input_menu();
+//            scanf("%s %s %d %d %d %d %c",&s->name,&s->major,&s->grade,&s->birt.year,&s->birt.month,&s->birt.day,&c);
+//            if(c=='M')
+//            {
+//                s->grade=male;
+//            }
+//            else
+//                s->g=female;
+//            printf("请输入科目数量：");
+//            scanf("%d",&n);
+//            printf("输入科目-成绩：\n");
+//            for(i=0;i<n;i++)
+//            {
+//                scanf("%s %f",s->sub[i].s,&s->sub[i].score);
+//            }
+//        s->rchild=s->lchild=NULL;
+//        if(!p)
+//        {
+//            printf("(*T)=s;\n");
+//            (*T)=s;
+//            (*T)->rchild=(*T)->lchild=NULL;
+//        }
+//        else if((p->num)<(s->num))
+//        {
+////            printf("p->rchild=s;\n");
+//            p->rchild=s;
+//        }
+//        else
+//        {
+////            printf("p->lchild=s;\n");
+//            p->lchild=s;
+//        }
+//
+//    }
+//
+//    return 1;
     while(1)
     {
         char a[15];
@@ -90,6 +139,7 @@ int add(tree *T)
         if(!find((*T),a,f,&p))
         {
             s=(tree) malloc(sizeof (tr));
+//            s->num=a;
             strcpy(s->num,a);
             input_menu();
             scanf("%s %s %d %d %d %d %c",&s->name,&s->major,&s->grade,&s->birt.year,&s->birt.month,&s->birt.day,&c);
@@ -109,15 +159,18 @@ int add(tree *T)
             s->rchild=s->lchild=NULL;
             if(!p)
             {
+                printf("(*T)=s;\n");
                 (*T)=s;
                 (*T)->rchild=(*T)->lchild=NULL;
             }
             else if(p->num>s->num)
             {
+                printf("p->rchild=s;\n");
                 p->rchild=s;
             }
             else
             {
+                printf("p->lchild=s;\n");
                 p->lchild=s;
             }
 
@@ -137,8 +190,9 @@ int add(tree *T)
 }
 void output(tree T)
 {
-    printf("*\n");
+//    printf("%d\n",T->num);
     if(T!=NULL) {
+//        printf("%s   ",T->num);
         printf("%s    %s     %s    %d    %d    %d    %d    ",T->num,T->name, T->major, T->grade, T->birt.year, T->birt.month, T->birt.day);
         if (T->g == 0)
         {
@@ -247,6 +301,16 @@ int alter(tree T,char a[])
 
     }
 }
+//int main()
+//{
+//    tree T=NULL;
+//    while(1)
+//    {
+//        add(&T);
+////        printf("%d\n",T->num);
+//        output(T);
+//    }
+//}
 int main()
 {
     tree T=NULL;
@@ -300,3 +364,10 @@ int main()
         }
     }
 }
+
+
+
+
+
+
+

@@ -22,6 +22,7 @@ typedef struct subject
 //树存储结构
 typedef struct tree
 {
+
     char num[15];
     char name[10];
     char major[20];
@@ -61,7 +62,6 @@ int find(tree T,char a[],tree f,tree *p)
     }
     else if(strcmp(T->num,a)==0)
     {
-
         (*p)=T;
         return 1;
     }
@@ -81,6 +81,8 @@ int add(tree *T)
     char c;
     tree s;
     tree f,p;
+    char a[15];
+    f=p=NULL;
     while(1)
     {
         char a[15];
@@ -137,8 +139,8 @@ int add(tree *T)
 }
 void output(tree T)
 {
-    printf("*\n");
-    if(T!=NULL) {
+    if(T!=NULL) 
+    {
         printf("%s    %s     %s    %d    %d    %d    %d    ",T->num,T->name, T->major, T->grade, T->birt.year, T->birt.month, T->birt.day);
         if (T->g == 0)
         {
@@ -247,6 +249,16 @@ int alter(tree T,char a[])
 
     }
 }
+//int main()
+//{
+//    tree T=NULL;
+//    while(1)
+//    {
+//        add(&T);
+////        printf("%d\n",T->num);
+//        output(T);
+//    }
+//}
 int main()
 {
     tree T=NULL;
@@ -300,3 +312,10 @@ int main()
         }
     }
 }
+
+
+
+
+
+
+
