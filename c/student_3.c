@@ -6,7 +6,7 @@
 #define max_sub_num 30
 //枚举类型
 enum gender {male,female};
-//生日结构体
+//生日结构题
 typedef struct birthday
 {
     int year;
@@ -22,7 +22,8 @@ typedef struct subject
 //树存储结构
 typedef struct tree
 {
-    char num[15];
+    int num;
+//    char num[15];
     char name[10];
     char major[20];
     int grade;
@@ -48,24 +49,25 @@ void input_menu()
     printf("姓名 专业 年级 年 月 日 性别（男：M，女：F）：\n");
 
 }
+//打印菜单
 void print_menu()
 {
     printf("学号 姓名 专业 年级 年 月 日 性别（男：M，女：F）：\n");
 }
-int find(tree T,char a[],tree f,tree *p)
+//查找存储位置
+int find(tree T,int a,tree f,tree *p)
 {
     if(!T)
     {
         (*p)=f;
         return 0;
     }
-    else if(strcmp(T->num,a)==0)
+    else if((T->num)==a)
     {
-
         (*p)=T;
         return 1;
     }
-    else if(strcmp(T->num,a)>0)
+    else if((T->num)<a)
     {
         return find(T->rchild,a,T,p);
     }
@@ -74,28 +76,27 @@ int find(tree T,char a[],tree f,tree *p)
         return find(T->lchild,a,T,p);
     }
 }
-
+//录入数据
 int add(tree *T)
 {
-    int b,i,n;
+    int b,i,n,a;
     char c;
     tree s;
     tree f,p;
+    f=p=NULL;
     while(1)
     {
-        char a[15];
-        f=p=NULL;
         printf("请输入学号：");
-        scanf("%s",a);
+        scanf("%d",&a);
         if(!find((*T),a,f,&p))
         {
             s=(tree) malloc(sizeof (tr));
-            strcpy(s->num,a);
+            s->num=a;
             input_menu();
-            scanf("%s %s %d %d %d %d %c",&s->name,&s->major,&s->grade,&s->birt.year,&s->birt.month,&s->birt.day,&c);
+            scanf("%s %s %d %d %d %d %c",s->name,s->major,&s->grade,&s->birt.year,&s->birt.month,&s->birt.day,&c);
             if(c=='M')
             {
-                s->grade=male;
+                s->g=male;
             }
             else
                 s->g=female;
@@ -112,7 +113,7 @@ int add(tree *T)
                 (*T)=s;
                 (*T)->rchild=(*T)->lchild=NULL;
             }
-            else if(p->num>s->num)
+            else if((p->num)<(s->num))
             {
                 p->rchild=s;
             }
@@ -120,7 +121,6 @@ int add(tree *T)
             {
                 p->lchild=s;
             }
-
         }
         getchar();
         printf("还要继续么(Y/N)？：");
@@ -131,15 +131,14 @@ int add(tree *T)
             case 'y': break;
             case 'Y': break;
             default: break;
-
         }
     }
 }
+//显示所有信息
 void output(tree T)
 {
-    printf("*\n");
     if(T!=NULL) {
-        printf("%s    %s     %s    %d    %d    %d    %d    ",T->num,T->name, T->major, T->grade, T->birt.year, T->birt.month, T->birt.day);
+        printf("%d    %s     %s    %d    %d    %d    %d    ",T->num,T->name, T->major, T->grade, T->birt.year, T->birt.month, T->birt.day);
         if (T->g == 0)
         {
             printf("male \n");
@@ -152,33 +151,35 @@ void output(tree T)
         output(T->rchild);
     }
 }
+//删除信息
 int deletes(tree *p)
 {
     tree temp,s;
     temp=s=NULL;
     if(((*p)->rchild==NULL)&&((*p)->lchild==NULL))
     {
-        free((*p));
+        free(*p);
         return 0;
     }
     else if((*p)->lchild)
     {
         for(temp=(*p)->lchild;temp->rchild!=NULL;temp=temp->rchild);
-        strcpy((*p)->num,temp->num);
+        (*p)->num=temp->num;
         deletes(&((*p)->lchild));
         (*p)->lchild=NULL;
     }
     else
     {
         for(temp=(*p)->rchild;temp->lchild!=NULL;temp=temp->lchild);
-        strcpy((*p)->num,temp->num);
+        (*p)->num=temp->num;
         deletes(&((*p)->rchild));
         (*p)->rchild=NULL;
     }
 
     return 1;
 }
-int delete(tree *T,char a[])
+//删除查找
+int delete(tree *T,int a)
 {
     if(!(*T))
     {
@@ -187,11 +188,11 @@ int delete(tree *T,char a[])
     }
     else
     {
-        if(strcmp((*T)->num,a)==0)
+        if((*T)->num==a)
         {
             return deletes(&(*T));
         }
-        else if(strcmp((*T)->num,a)>0)
+        else if((*T)->num<a)
         {
             return delete((*T)->rchild,a);
         }
@@ -202,15 +203,16 @@ int delete(tree *T,char a[])
 
     }
 }
+//修改信息
 int alters(tree *p)
 {
     char c;
     int i,n;
     input_menu();
-    scanf("%s %s %d %d %d %d %c",&(*p)->name,&(*p)->major,&(*p)->grade,&(*p)->birt.year,&(*p)->birt.month,&(*p)->birt.day,&c);
+    scanf("%s %s %d %d %d %d %c",(*p)->name,(*p)->major,&(*p)->grade,&(*p)->birt.year,&(*p)->birt.month,&(*p)->birt.day,&c);
     if(c=='M')
     {
-        (*p)->grade=male;
+        (*p)->g=male;
     }
     else
         (*p)->g=female;
@@ -223,35 +225,36 @@ int alters(tree *p)
     }
     return 1;
 }
-int alter(tree T,char a[])
+//修改判断
+int alter(tree *T,int a)
 {
-    if(!T)
+    if(!(*T))
     {
         printf("当前无信息\n");
         return 0;
     }
     else
     {
-        if(strcmp(T->num,a)==0)
+        if((*T)->num==a)
         {
-            return alters(&T);
+            return alters(&(*T));
         }
-        else if(strcmp(T->num,a)>0)
+        else if((*T)->num<a)
         {
-            return alter(T->rchild,a);
+            return alter((*T)->rchild,a);
         }
         else
         {
-            return alter(T->lchild,a);
+            return alter((*T)->lchild,a);
         }
 
     }
 }
+//程序入口
 int main()
 {
     tree T=NULL;
-    int choose;
-    char a[15];
+    int choose,a;
     while (1)
     {
         menu();
@@ -272,8 +275,8 @@ int main()
             case 2:
             {
                 printf("请输入学号：\n");
-                scanf("%s",a);
-                delete(T,a);
+                scanf("%d",&a);
+                delete(&T,a);
                 printf("删除成功\n");
 //                system("pause");
                 break;
@@ -281,8 +284,8 @@ int main()
             case 3:
             {
                 printf("请输入学号：\n");
-                scanf("%s",a);
-                alter(T,a);
+                scanf("%d",&a);
+                alter(&T,a);
                 printf("修改成功\n");
 //                system("pause");
                 break;
