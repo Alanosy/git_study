@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+//#include <unistd.h> //mac调用命令的头文件
+//#include <windows.h>  //windows调用命令的头文件
 //宏定义
 #define max_sub_num 30
 //枚举类型
@@ -138,17 +140,20 @@ int add(tree *T)
 void output(tree T)
 {
     if(T!=NULL) {
-        printf("%d    %s     %s    %d    %d    %d    %d    ",T->num,T->name, T->major, T->grade, T->birt.year, T->birt.month, T->birt.day);
-        if (T->g == 0)
+        if(T->num!=0)
         {
-            printf("male \n");
+            printf("%d    %s     %s    %d    %d    %d    %d    ",T->num,T->name, T->major, T->grade, T->birt.year, T->birt.month, T->birt.day);
+            if (T->g == 0)
+            {
+                printf("male \n");
+            }
+            else
+            {
+                printf("female \n");
+            }
+            output(T->lchild);
+            output(T->rchild);
         }
-        else
-        {
-            printf("female \n");
-        }
-        output(T->lchild);
-        output(T->rchild);
     }
 }
 //删除信息
